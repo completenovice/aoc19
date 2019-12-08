@@ -17,7 +17,8 @@ type row struct {
 
 // Layer is a struct
 type Layer struct {
-	rows []row
+	rows  []row
+	count map[int]int
 }
 
 func main() {
@@ -31,6 +32,10 @@ func main() {
 
 	for len(chars) > 0 {
 		l := Layer{}
+		l.count = make(map[int]int)
+		l.count[0] = 0
+		l.count[1] = 0
+		l.count[2] = 0
 		for h := 0; h < height; h++ {
 			r := row{}
 			r.values = []int{}
@@ -40,21 +45,20 @@ func main() {
 
 				fmt.Printf("%+v", digit)
 				r.values = append(r.values, digit)
+				l.count[digit]++
 			}
 			fmt.Println("")
 		}
 		fmt.Println("New layer")
 		layers = append(layers, l)
 	}
-
+	lowestZeroLayer := 10000000000
+	data := 0
 	for _, l := range layers {
-		zeroCount := 0
-		for _, r := range l.rows {
-			for _, v := range r.values {
-				if v == 0 {
-					zeroCount++
-				}
-			}
+		if l.count[0] < lowestZeroLayer {
+			lowestZeroLayer = l.count[0]
+			data = l.count[1] * l.count[2]
+			fmt.Printf("New lowest value: %+v\n", data)
 		}
 	}
 }

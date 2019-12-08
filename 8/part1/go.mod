@@ -1,3 +1,3 @@
-module day5
+module day8
 
 go 1.13
